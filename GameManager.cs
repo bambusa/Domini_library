@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Domini.Buildings;
 using UnityEngine;
 
@@ -50,7 +51,9 @@ namespace Domini
 
         public void Log(string message)
         {
-            Debug.Log(message);
+            if (!UnitTestDetector.IsInUnitTest)
+                Debug.Log(message);
+            Console.WriteLine(message);
         }
     }
 }

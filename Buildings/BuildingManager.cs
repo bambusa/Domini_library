@@ -1,62 +1,76 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Domini.Buildings
 {
-    public enum Building
-    {
-        Woodjack,
-        Stonecutter
-    }
-    
     public class BuildingManager
     {
-        private Dictionary<Building, int> _buildings;
+        private Dictionary<BuildingType, BuildingData> _buildingData;
+        private Dictionary<BuildingType, List<Building>> _buildings;
 
         public BuildingManager()
         {
-            _buildings = new Dictionary<Building, int>();
-            DummyBuldings();
+            _buildings = new Dictionary<BuildingType, List<Building>>();
+            InitBuildingData();
         }
 
-        // TODO: Remove
-        private void DummyBuldings()
+        private void InitBuildingData()
         {
-            _buildings.Add(Building.Woodjack, 2);
-            _buildings.Add(Building.Stonecutter, 1);
+            _buildingData = new Dictionary<BuildingType, BuildingData>();
+            _buildingData.Add(BuildingType.Woodjack, new BuildingData(BuildingType.Woodjack));
+            _buildingData.Add(BuildingType.Stonecutter, new BuildingData(BuildingType.Stonecutter));
         }
 
-        public void Build(Building building)
+        public BuildingData GetBuildingData(BuildingType buildingType)
         {
-            switch (building)
+            if (!_buildingData.ContainsKey(buildingType))
+                throw new Exception("BuildingData not initialized");
+            return _buildingData[buildingType];
+        }
+
+        public void CheatBuilding(BuildingType buildingType, int amount)
+        {
+            if (!_buildings.ContainsKey(buildingType))
+                _buildings.Add(buildingType, new List<Building>());
+            else
+                _buildings[buildingType] = new List<Building>();
+                
+            for (int i = 0; i < amount; i++)
             {
-                    case Building.Woodjack:
-                        var resourcesNeeded = new Dictionary<Resource, int>();
-                        resourcesNeeded.Add(Resource.Wood, 100);
-                        if (GameManager.Instance.ResourceManager.UseResourcesIfAvailable(resourcesNeeded))
-                        {
-                            AddBuilding(Building.Woodjack);
-                            GameManager.Instance.Log($"Built new Woodjack, now having {_buildings[Building.Woodjack]}");
-                        }
-                        else
-                        {
-                            GameManager.Instance.Log("Not enough resources");
-                        }
-                        break;
+                _buildings[buildingType].Add(new Building(_buildingData[buildingType]));
             }
         }
 
-        private void AddBuilding(Building building)
+        public void Build(BuildingType buildingType)
         {
-            if (_buildings.ContainsKey(building))
+            var buildingData = _buildingData[buildingType];
+            var resourcesNeeded = buildingData.BuildingCosts;
+            if (GameManager.Instance.ResourceManager.UseResourcesIfAvailable(resourcesNeeded))
             {
-                var before = _buildings[building];
-                var after = before += 1;
-                _buildings[building] = after;
+                AddBuilding(buildingType);
+                GameManager.Instance.Log($"Built new {buildingData.Name}, now having {GetBuildingCount(buildingType)}");
             }
             else
             {
-                _buildings.Add(building, 1);
+                GameManager.Instance.Log("Not enough resources");
             }
+        }
+
+        private void AddBuilding(BuildingType buildingType)
+        {
+            if (!_buildings.ContainsKey(buildingType))
+            {
+                _buildings.Add(buildingType, new List<Building>());
+            }
+
+            _buildings[buildingType].Add(new Building(_buildingData[buildingType]));
+        }
+
+        public int GetBuildingCount(BuildingType buildingType)
+        {
+            if (!_buildings.ContainsKey(buildingType))
+                return 0;
+            return _buildings[buildingType].Count;
         }
     }
 }

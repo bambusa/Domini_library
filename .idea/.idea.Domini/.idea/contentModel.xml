@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Projekte\Domini" t="IncludeRecursive">
+    <e p="C:\Users\BSD\.Rider2018.1\system\resharper-host\local\Transient\ReSharperHost\v12\SolutionCaches\_Domini.171375920.00" t="ExcludeRecursive" />
+    <e p="C:\Users\BSD\RiderProjects\Domini_library" t="IncludeRecursive">
       <e p="bin" t="ExcludeRecursive" />
       <e p="Buildings" t="Include">
+        <e p="Building.cs" t="Include" />
+        <e p="BuildingData.cs" t="Include" />
         <e p="BuildingManager.cs" t="Include" />
       </e>
       <e p="Domini.csproj" t="IncludeRecursive" />
@@ -15,19 +18,26 @@
         <e p="AssemblyInfo.cs" t="Include" />
       </e>
       <e p="Resources" t="Include">
+        <e p="ResourceData.cs" t="Include" />
         <e p="ResourceManager.cs" t="Include" />
       </e>
       <e p="TestProject" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
+        <e p="BuildingManagerTests.cs" t="Include" />
+        <e p="GameManagerTests.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
         </e>
+        <e p="ResourceManagerTests.cs" t="Include" />
         <e p="TestProject.csproj" t="IncludeRecursive" />
-        <e p="Tests.cs" t="Include" />
+        <e p="TestUtils.cs" t="Include" />
       </e>
+      <e p="UnitTestDetector.cs" t="Include" />
       <e p="UnityLifecycle.cs" t="Include" />
     </e>
-    <e p="C:\Users\benni\.Rider2018.1\system\resharper-host\local\Transient\ReSharperHost\v12\SolutionCaches\_Domini.-1337794163.00" t="ExcludeRecursive" />
+  </component>
+  <component name="RiderRiderContentModelStore">
+    <excludedPaths />
   </component>
 </project>

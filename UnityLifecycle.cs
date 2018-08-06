@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine.Experimental.PlayerLoop;
-
-namespace Domini
+﻿namespace Domini
 {
     public class UnityLifecycle
     {

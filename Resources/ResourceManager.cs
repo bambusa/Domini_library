@@ -1,21 +1,16 @@
-﻿using System.Collections.Generic;
-using UnityEngine.Video;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Domini
 {
-    public enum Resource
-    {
-        Wood,
-        Stone
-    }
-    
     public class ResourceManager : UnityLifecycle
     {
-        private Dictionary<Resource, float> _resources;
+        private Dictionary<ResourceType, ResourceData> _resourceData;
+        private Dictionary<ResourceType, float> _resourceStorage;
 
         public ResourceManager()
         {
-            _resources = new Dictionary<Resource, float>();
+            _resourceStorage = new Dictionary<ResourceType, float>();
         }
 
         public override void Start()
@@ -25,17 +20,38 @@ namespace Domini
 
         private void InitResources()
         {
-            DummyResources();
+            _resourceData = new Dictionary<ResourceType, ResourceData>();
+            _resourceData.Add(ResourceType.Wood, new ResourceData(ResourceType.Wood, "Wood"));
+            _resourceData.Add(ResourceType.Stone, new ResourceData(ResourceType.Stone, "Stone"));
         }
 
-        // TODO: Remove
-        private void DummyResources()
+        public ResourceData GetResourceData(ResourceType resourceType)
         {
-            _resources.Add(Resource.Wood, 100);
-            _resources.Add(Resource.Stone, 100);
+            if (!_resourceData.ContainsKey(resourceType))
+                throw new Exception("ResourceData not initialized");
+            return _resourceData[resourceType];
         }
 
-        public bool UseResourcesIfAvailable(Dictionary<Resource, int> resources)
+        public float GetResourceAmount(ResourceType resourceType)
+        {
+            if (!_resourceStorage.ContainsKey(resourceType))
+                return 0;
+            return _resourceStorage[resourceType];
+        }
+        
+        public void CheatResources(ResourceType resourceType, float amount)
+        {
+            if (!_resourceStorage.ContainsKey(resourceType))
+            {
+                _resourceStorage.Add(resourceType, amount);
+            }
+            else
+            {
+                _resourceStorage[resourceType] = amount;
+            }
+        }
+
+        public bool UseResourcesIfAvailable(Dictionary<ResourceType, int> resources)
         {
             // Check availability
             foreach (var resource in resources)
@@ -46,15 +62,15 @@ namespace Domini
                     return false;
                 }
             }
-            
+
             // Remove used resources
             foreach (var resource in resources)
             {
-                if (_resources.ContainsKey(resource.Key))
+                if (_resourceStorage.ContainsKey(resource.Key))
                 {
-                    var before = _resources[resource.Key];
+                    var before = _resourceStorage[resource.Key];
                     var after = before - resource.Value;
-                    _resources[resource.Key] = after;
+                    _resourceStorage[resource.Key] = after;
                     GameManager.Instance.Log($"Used {resource.Value} {resource.Key.ToString()}, now having {after}");
                 }
             }
@@ -62,9 +78,10 @@ namespace Domini
             return true;
         }
 
-        public bool CheckResourceAvailability(Resource resource, int amount)
+        public bool CheckResourceAvailability(ResourceType resourceType, int amount)
         {
-            return _resources.ContainsKey(resource) && _resources[resource] >= amount;
+            return _resourceStorage.ContainsKey(resourceType) &&
+                   _resourceStorage[resourceType] >= amount;
         }
     }
 }
