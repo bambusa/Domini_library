@@ -14,13 +14,14 @@ namespace TestProject {
             var gameManager = TestUtils.InitGameManager();
             Assert.IsNotNull(gameManager);
             Assert.IsNotNull(gameManager.ResourceManager);
+            Assert.IsNotNull(gameManager.ResourceManager.ResourceStorage);
             Assert.IsNotNull(gameManager.BuildingManager);
         }
         
         [Test]
         public void GameManagerUpdate(){
             var gameManager = TestUtils.InitGameManager();
-            Assert.DoesNotThrow(gameManager.Update);
+            Assert.DoesNotThrow(() => gameManager.Update(0,0));
         }
     }
 }

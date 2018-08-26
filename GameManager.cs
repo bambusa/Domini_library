@@ -1,27 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using Domini.Buildings;
+using Domini.Resources;
 using UnityEngine;
 
 namespace Domini
 {
     public class GameManager
     {
-        private static readonly GameManager _instance = new GameManager();
-
-        private List<UnityLifecycle> _lifecycles;
 
         public ResourceManager ResourceManager;
         public BuildingManager BuildingManager;
         
+        private static readonly GameManager _instance = new GameManager();
+
+        private List<IGameLoop> _lifecycles;
         static GameManager(){}
         private GameManager(){}
+        private float _lastUpdateTime;
 
         public static GameManager Instance => _instance;
 
         public void Start()
         {
-            _lifecycles = new List<UnityLifecycle>();
+            _lifecycles = new List<IGameLoop>();
             InitManager();
             InitLifecycles();
             for (int i = 0; i < _lifecycles.Count; i++)
@@ -41,11 +43,13 @@ namespace Domini
             _lifecycles.Add(ResourceManager);
         }
 
-        public void Update()
+        public void Update(float time, float deltaTime)
         {
+            var secondsPassed = (long) Math.Floor(time - _lastUpdateTime);
+            _lastUpdateTime = time;
             for (int i = 0; i < _lifecycles.Count; i++)
             {
-                _lifecycles[i].Update();
+                _lifecycles[i].Update(time, deltaTime, secondsPassed);
             }
         }
 

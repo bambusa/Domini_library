@@ -1,12 +1,13 @@
 ﻿using System;
 using Domini;
 using Domini.Buildings;
+using Domini.Resources;
 
 namespace TestProject
 {
     public static class TestUtils
     {
-        public static readonly float CheatFullResourceAmount = 9999;
+        public static readonly long CheatFullResourceAmount = 9999;
             
         public static GameManager InitGameManager()
         {
@@ -19,7 +20,7 @@ namespace TestProject
         {
             foreach (var resourceType in (ResourceType[]) Enum.GetValues(typeof(ResourceType)))
             {
-                GameManager.Instance.ResourceManager.CheatResources(resourceType, 0);
+                GameManager.Instance.ResourceManager.ResourceStorage.AddResource(resourceType, 0);
             }
         }
 
@@ -27,7 +28,7 @@ namespace TestProject
         {
             foreach (var resourceType in (ResourceType[]) Enum.GetValues(typeof(ResourceType)))
             {
-                GameManager.Instance.ResourceManager.CheatResources(resourceType, CheatFullResourceAmount);
+                GameManager.Instance.ResourceManager.ResourceStorage.AddResource(resourceType, CheatFullResourceAmount);
             }
         }
 

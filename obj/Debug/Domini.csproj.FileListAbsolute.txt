@@ -16,3 +16,11 @@ C:\Projekte\Domini\obj\Debug\Domini.csproj.CoreCompileInputs.cache
 C:\Projekte\Domini\obj\Debug\Domini.csproj.CopyComplete
 C:\Projekte\Domini\obj\Debug\Domini.dll
 C:\Projekte\Domini\obj\Debug\Domini.pdb
+C:\Users\BSD\RiderProjects\Domini_library\bin\Debug\Domini.dll
+C:\Users\BSD\RiderProjects\Domini_library\bin\Debug\Domini.pdb
+C:\Users\BSD\RiderProjects\Domini_library\bin\Debug\UnityEngine.dll
+C:\Users\BSD\RiderProjects\Domini_library\bin\Debug\UnityEngine.xml
+C:\Users\BSD\RiderProjects\Domini_library\obj\Debug\Domini.csprojResolveAssemblyReference.cache
+C:\Users\BSD\RiderProjects\Domini_library\obj\Debug\Domini.csproj.CoreCompileInputs.cache
+C:\Users\BSD\RiderProjects\Domini_library\obj\Debug\Domini.dll
+C:\Users\BSD\RiderProjects\Domini_library\obj\Debug\Domini.pdb

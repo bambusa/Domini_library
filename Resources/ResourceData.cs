@@ -1,4 +1,4 @@
-﻿namespace Domini
+﻿namespace Domini.Resources
 {
     public enum ResourceType
     {

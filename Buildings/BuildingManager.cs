@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Domini.Buildings
 {
-    public class BuildingManager
+    public class BuildingManager : IGameLoop
     {
         private Dictionary<BuildingType, BuildingData> _buildingData;
         private Dictionary<BuildingType, List<Building>> _buildings;
@@ -12,6 +12,49 @@ namespace Domini.Buildings
         {
             _buildings = new Dictionary<BuildingType, List<Building>>();
             InitBuildingData();
+        }
+
+        public void Start()
+        {
+        }
+
+        /// <summary>
+        /// Calculate production (input / output) of all existing buildings
+        /// </summary>
+        public void Update(float time, float deltaTime, long secondsPassed)
+        {
+            if (secondsPassed > 0)
+            {
+                foreach (var buildingsOfType in _buildings.Values)
+                {
+                    foreach (var building in buildingsOfType)
+                    {
+                        var input = building.BuildingData.Input;
+                        if (secondsPassed > 1)
+                        {
+                            foreach (var f in input)
+                            {
+                                input[f.Key] = f.Value * secondsPassed;
+                            }
+                        }
+
+                        var resourcesAvailable =
+                            GameManager.Instance.ResourceManager.ResourceStorage.UseResourcesIfAvailable(input);
+                        if (resourcesAvailable)
+                        {
+                            var output = building.BuildingData.Output;
+                            if (secondsPassed > 1)
+                            {
+                                foreach (var l in output)
+                                {
+                                    output[l.Key] = l.Value * secondsPassed;
+                                }
+                            }
+                            GameManager.Instance.ResourceManager.ResourceStorage.AddResources(output);
+                        }
+                    }
+                }
+            }
         }
 
         private void InitBuildingData()
@@ -45,7 +88,7 @@ namespace Domini.Buildings
         {
             var buildingData = _buildingData[buildingType];
             var resourcesNeeded = buildingData.BuildingCosts;
-            if (GameManager.Instance.ResourceManager.UseResourcesIfAvailable(resourcesNeeded))
+            if (GameManager.Instance.ResourceManager.ResourceStorage.UseResourcesIfAvailable(resourcesNeeded))
             {
                 AddBuilding(buildingType);
                 GameManager.Instance.Log($"Built new {buildingData.Name}, now having {GetBuildingCount(buildingType)}");

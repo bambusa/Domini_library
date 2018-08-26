@@ -1,5 +1,6 @@
 ﻿using System;
 using Domini;
+using Domini.Resources;
 using NUnit.Framework;
 
 namespace TestProject
@@ -26,14 +27,14 @@ namespace TestProject
             TestUtils.CheatFullResourceStorage();
             foreach (var resourceType in (ResourceType[]) Enum.GetValues(typeof(ResourceType)))
             {
-                var amount = gameManager.ResourceManager.GetResourceAmount(resourceType);
+                var amount = gameManager.ResourceManager.ResourceStorage.GetResourceAmount(resourceType);
                 Assert.That(amount, Is.EqualTo(TestUtils.CheatFullResourceAmount));
             }
             
             TestUtils.CheatEmptyResourceStorage();
             foreach (var resourceType in (ResourceType[]) Enum.GetValues(typeof(ResourceType)))
             {
-                var amount = gameManager.ResourceManager.GetResourceAmount(resourceType);
+                var amount = gameManager.ResourceManager.ResourceStorage.GetResourceAmount(resourceType);
                 Assert.That(amount, Is.EqualTo(0));
             }
         }

@@ -1,28 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Domini
+namespace Domini.Resources
 {
-    public class ResourceManager : UnityLifecycle
+    public class ResourceManager : IGameLoop
     {
+        public ResourceStorage ResourceStorage;
+
         private Dictionary<ResourceType, ResourceData> _resourceData;
-        private Dictionary<ResourceType, float> _resourceStorage;
 
-        public ResourceManager()
+        public void Start()
         {
-            _resourceStorage = new Dictionary<ResourceType, float>();
+            InitResourceData();
+            ResourceStorage = new ResourceStorage();
         }
 
-        public override void Start()
-        {
-            InitResources();
-        }
+        public void Update(float time, float deltaTime, long secondsPassed) { }
 
-        private void InitResources()
+        private void InitResourceData()
         {
             _resourceData = new Dictionary<ResourceType, ResourceData>();
-            _resourceData.Add(ResourceType.Wood, new ResourceData(ResourceType.Wood, "Wood"));
-            _resourceData.Add(ResourceType.Stone, new ResourceData(ResourceType.Stone, "Stone"));
+            foreach (var resourceType in (ResourceType[]) Enum.GetValues(typeof(ResourceType)))
+            {
+                _resourceData.Add(resourceType, new ResourceData(ResourceType.Wood, resourceType.ToString()));
+            }
         }
 
         public ResourceData GetResourceData(ResourceType resourceType)
@@ -30,58 +31,6 @@ namespace Domini
             if (!_resourceData.ContainsKey(resourceType))
                 throw new Exception("ResourceData not initialized");
             return _resourceData[resourceType];
-        }
-
-        public float GetResourceAmount(ResourceType resourceType)
-        {
-            if (!_resourceStorage.ContainsKey(resourceType))
-                return 0;
-            return _resourceStorage[resourceType];
-        }
-        
-        public void CheatResources(ResourceType resourceType, float amount)
-        {
-            if (!_resourceStorage.ContainsKey(resourceType))
-            {
-                _resourceStorage.Add(resourceType, amount);
-            }
-            else
-            {
-                _resourceStorage[resourceType] = amount;
-            }
-        }
-
-        public bool UseResourcesIfAvailable(Dictionary<ResourceType, int> resources)
-        {
-            // Check availability
-            foreach (var resource in resources)
-            {
-                if (!CheckResourceAvailability(resource.Key, resource.Value))
-                {
-                    GameManager.Instance.Log("Not enough resources available");
-                    return false;
-                }
-            }
-
-            // Remove used resources
-            foreach (var resource in resources)
-            {
-                if (_resourceStorage.ContainsKey(resource.Key))
-                {
-                    var before = _resourceStorage[resource.Key];
-                    var after = before - resource.Value;
-                    _resourceStorage[resource.Key] = after;
-                    GameManager.Instance.Log($"Used {resource.Value} {resource.Key.ToString()}, now having {after}");
-                }
-            }
-
-            return true;
-        }
-
-        public bool CheckResourceAvailability(ResourceType resourceType, int amount)
-        {
-            return _resourceStorage.ContainsKey(resourceType) &&
-                   _resourceStorage[resourceType] >= amount;
         }
     }
 }

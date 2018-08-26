@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Domini.Resources;
 
 namespace Domini.Buildings
 {
@@ -12,36 +13,39 @@ namespace Domini.Buildings
     {
         public BuildingType BuildingType { get; private set; }
         public string Name { get; private set; }
-        public Dictionary<ResourceType, int> BuildingCosts => _buildingCosts;
-        public Dictionary<ResourceType, float> Input => _input;
-        public Dictionary<ResourceType, float> Output => _output;
+        public int ResourceTier { get; private set; }
+        public Dictionary<ResourceType, long> BuildingCosts => _buildingCosts;
+        public Dictionary<ResourceType, long> Input => _input;
+        public Dictionary<ResourceType, long> Output => _output;
         
-        private Dictionary<ResourceType, int> _buildingCosts;
-        private Dictionary<ResourceType, float> _input;
-        private Dictionary<ResourceType, float> _output;
+        private Dictionary<ResourceType, long> _buildingCosts;
+        private Dictionary<ResourceType, long> _input;
+        private Dictionary<ResourceType, long> _output;
 
         public BuildingData(BuildingType buildingType)
         {
-            InitResource(buildingType);
+            InitResourceStats(buildingType);
         }
 
-        private void InitResource(BuildingType buildingType)
+        private void InitResourceStats(BuildingType buildingType)
         {
-            _buildingCosts = new Dictionary<ResourceType, int>();
-            _input = new Dictionary<ResourceType, float>();
-            _output = new Dictionary<ResourceType, float>();
+            _buildingCosts = new Dictionary<ResourceType, long>();
+            _input = new Dictionary<ResourceType, long>();
+            _output = new Dictionary<ResourceType, long>();
             
             switch (buildingType)
             {
                     case BuildingType.Woodjack:
                         BuildingType = buildingType;
                         Name = "Woodjack";
+                        ResourceTier = 1;
                         _buildingCosts.Add(ResourceType.Wood, 100);
                         _output.Add(ResourceType.Wood, 1);
                         break;
                     case BuildingType.Stonecutter:
                         BuildingType = buildingType;
                         Name = "Stonecutter";
+                        ResourceTier = 1;
                         _buildingCosts.Add(ResourceType.Stone, 100);
                         _output.Add(ResourceType.Stone, 1);
                         break;
