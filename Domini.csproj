@@ -48,7 +48,6 @@
     <Compile Include="Resources\ResourceData.cs" />
     <Compile Include="Resources\ResourceManager.cs" />
     <Compile Include="Resources\ResourceStorage.cs" />
-    <Compile Include="UnitTestDetector.cs" />
     <Compile Include="IGameLoop.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

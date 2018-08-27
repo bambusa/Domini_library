@@ -4,10 +4,10 @@ using NUnit.Framework;
 namespace TestProject {
     [TestFixture]
     public class GameManagerTests {
-        [Test]
+        /*[Test]
         public void UnitTestDetected() {
             Assert.IsTrue(UnitTestDetector.IsInUnitTest);
-        }
+        }*/
         
         [Test]
         public void GameManager() {

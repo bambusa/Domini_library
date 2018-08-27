@@ -55,9 +55,10 @@ namespace Domini
 
         public void Log(string message)
         {
-            if (!UnitTestDetector.IsInUnitTest)
+            if (Application.isEditor)
                 Debug.Log(message);
-            Console.WriteLine(message);
+            else
+                Console.WriteLine(message);
         }
     }
 }
